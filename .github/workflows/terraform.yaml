@@ -60,8 +60,19 @@ jobs:
         working-directory: ./environments/${{env.TF_ENV}}
         run: terraform init
 
-      # - name: Terraform Validate
-      #   run: terraform validate
+      - name: Terraform Format Check
+        working-directory: ./environments/${{env.TF_ENV}}
+        run: terraform fmt --check -recursive
 
-      # - name: Terraform Plan
-      #   run: terraform plan -var-file=environments/${{ github.ref_name }}/variables.tf
+      - name: Terraform Validate
+        working-directory: ./environments/${{ env.TF_ENV }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ./environments/${{ env.TF_ENV }}
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.event_name == 'push'
+        working-directory: ./environments/${{ env.TF_ENV }}
+        run: terraform apply -auto-approve tfplan
