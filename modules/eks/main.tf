@@ -8,7 +8,7 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   cluster_compute_config = {
-    enabled    = true
+    enabled    = true #Change to managed node groups in the future
     node_pools = ["general-purpose"]
   }
 
@@ -17,3 +17,4 @@ module "eks" {
 
   tags = var.tags
 }
+
