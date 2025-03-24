@@ -27,7 +27,7 @@ jobs:
             - name: Set Target Environment
               id: set_tf_env
               run: |
-                echo "TF_ENV: ${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+                echo "TF_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
                 echo "Destroying resources in environment: $TF_ENV"
 
             - name: Configure AWS Credentials
