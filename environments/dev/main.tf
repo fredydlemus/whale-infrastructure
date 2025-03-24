@@ -30,10 +30,6 @@ module "eks" {
   eks_version           = "1.21"
   vpc_id                = module.vpc.vpc_id
   subnets               = module.vpc.private_subnets
-  node_instance_type    = "t3.medium"
-  node_desired_capacity = 2
-  node_min_capacity     = 1
-  node_max_capacity     = 3
 
   tags = {
     Environment = "dev"
