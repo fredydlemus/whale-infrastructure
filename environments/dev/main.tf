@@ -25,11 +25,11 @@ module "vpc" {
 }
 
 module "eks" {
-  source                = "../../modules/eks"
-  cluster_name          = "dev-cluster"
-  eks_version           = "1.21"
-  vpc_id                = module.vpc.vpc_id
-  subnets               = module.vpc.private_subnets
+  source       = "../../modules/eks"
+  cluster_name = "dev-cluster"
+  eks_version  = "1.21"
+  vpc_id       = module.vpc.vpc_id
+  subnets      = module.vpc.private_subnets
 
   tags = {
     Environment = "dev"

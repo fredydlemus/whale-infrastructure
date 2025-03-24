@@ -4,16 +4,16 @@ module "eks" {
 
   cluster_name    = var.cluster_name
   cluster_version = var.eks_version
- 
+
   enable_cluster_creator_admin_permissions = true
 
- cluster_compute_config = {
-    enabled = true
+  cluster_compute_config = {
+    enabled    = true
     node_pools = ["general-purpose"]
- }
+  }
 
- vpc_id = var.vpc_id
- subnet_ids = var.subnets
+  vpc_id     = var.vpc_id
+  subnet_ids = var.subnets
 
   tags = var.tags
 }
