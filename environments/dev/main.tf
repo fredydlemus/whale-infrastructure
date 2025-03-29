@@ -29,7 +29,7 @@ module "eks" {
   cluster_name = "dev-cluster"
   eks_version  = "1.29"
   vpc_id       = module.vpc.vpc_id
-  subnets      = module.vpc.private_subnets
+  subnets      = module.vpc.public_subnets # Public subnets for EKS (remove when using private subnets)
 
   tags = {
     Environment = "dev"
