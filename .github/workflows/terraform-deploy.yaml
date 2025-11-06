@@ -1,0 +1,55 @@
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      stack:
+        description: 'Target stack to deploy'
+        required: true
+        type: choice
+        options:
+           - ecr
+
+jobs:
+  terraform:
+    name: Terraform Deployment
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses:  aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHubActionsSession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+           terraform_version: 1.3.2
+
+      - name: Terraform Init
+        working-directory: ./stacks/${{ github.event.inputs.stack }}
+        run: |
+          terraform init -backend-config="bucket=${{ env.STATE_BUCKET }}" 
+
+      - name: Terraform Format Check
+        working-directory: ./stacks/${{ github.event.inputs.stack }}
+        run: terraform fmt --check -recursive
+
+      - name: Terraform Validate
+        working-directory: ./stacks/${{ github.event.inputs.stack }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ./stacks/${{ github.event.inputs.stack }}
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ./stacks/${{ github.event.inputs.stack }}
+        run: terraform apply -auto-approve tfplan
