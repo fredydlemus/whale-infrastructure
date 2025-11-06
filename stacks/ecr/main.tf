@@ -4,7 +4,7 @@ module "microservices_ecr" {
   image_tag_mutability = "IMMUTABLE"
   scan_on_push         = true
   tags = {
-    Project     = "whale-app"
-    Terraform   = "true"
+    Project   = "whale-app"
+    Terraform = "true"
   }
 }
